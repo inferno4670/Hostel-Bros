@@ -2,7 +2,7 @@ import { initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getDatabase } from 'firebase/database';
-import { getStorage } from 'firebase/storage';
+// import { getStorage } from 'firebase/storage'; // Disabled until Blaze plan
 
 const firebaseConfig = {
   // TODO: Replace with your Firebase config
@@ -22,7 +22,8 @@ const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const rtdb = getDatabase(app);
-export const storage = getStorage(app);
+// export const storage = getStorage(app); // Disabled until Blaze plan
+export const storage = null; // Temporarily disabled
 
 // Configure Google Auth Provider
 export const googleProvider = new GoogleAuthProvider();

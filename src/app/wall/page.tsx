@@ -623,36 +623,20 @@ export default function SocialWallPage() {
                   />
                 </div>
                 
+                {/* File uploads disabled - enable when Firebase Storage is set up
                 {(newPost.type === 'image' || newPost.type === 'doc') && (
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       {newPost.type === 'image' ? 'Upload Image/Meme' : 'Upload Document'}
                     </label>
                     <div className="border-2 border-dashed border-gray-300 rounded-lg p-4">
-                      <input
-                        type="file"
-                        onChange={handleFileSelect}
-                        accept={newPost.type === 'image' ? 'image/*' : '*/*'}
-                        className="hidden"
-                        id="file-upload"
-                      />
-                      <label
-                        htmlFor="file-upload"
-                        className="cursor-pointer flex flex-col items-center space-y-2"
-                      >
-                        <Upload className="h-8 w-8 text-gray-400" />
-                        <span className="text-sm text-gray-600">
-                          Click to {newPost.type === 'image' ? 'upload image' : 'upload file'}
-                        </span>
-                      </label>
-                      {selectedFile && (
-                        <div className="mt-2 text-sm text-gray-700">
-                          Selected: {selectedFile.name}
-                        </div>
-                      )}
+                      <div className="text-center text-gray-500">
+                        File uploads require Firebase Storage setup
+                      </div>
                     </div>
                   </div>
                 )}
+                */}
                 
                 <div className="bg-blue-50 p-3 rounded-lg">
                   <p className="text-sm text-blue-800">

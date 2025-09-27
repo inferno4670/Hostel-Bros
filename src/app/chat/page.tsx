@@ -419,6 +419,7 @@ export default function ChatPage() {
                 )}
                 
                 <form onSubmit={handleSendMessage} className="flex items-center space-x-2">
+                  {/* File uploads disabled - enable when Firebase Storage is set up
                   <input
                     type="file"
                     onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
@@ -428,6 +429,7 @@ export default function ChatPage() {
                   <label htmlFor="file-input" className="p-2 text-gray-400 hover:text-gray-600 cursor-pointer">
                     <Paperclip className="h-5 w-5" />
                   </label>
+                  */}
                   
                   <input
                     type="text"
