@@ -42,71 +42,80 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      console.log('Auth state changed:', firebaseUser?.email || 'signed out');
       setFirebaseUser(firebaseUser);
       
       if (firebaseUser) {
-        // Get or create user document
-        const userDoc = await getDoc(doc(db, 'users', firebaseUser.uid));
-        
-        if (userDoc.exists()) {
-          const userData = userDoc.data();
-          const user: User = {
-            id: firebaseUser.uid,
-            name: userData.name || firebaseUser.displayName || '',
-            email: firebaseUser.email || '',
-            profilePic: userData.profilePic || firebaseUser.photoURL || '',
-            role: userData.role || 'user',
-            status: 'online',
-            roomNumber: userData.roomNumber,
-            joinedAt: userData.joinedAt?.toDate() || new Date(),
-            lastSeen: new Date(),
-            isNightOwl: userData.isNightOwl || false,
-          };
-          setUser(user);
+        try {
+          // Get or create user document
+          const userDoc = await getDoc(doc(db, 'users', firebaseUser.uid));
           
-          // Update presence in Realtime Database
-          const userStatusRef = ref(rtdb, `status/${firebaseUser.uid}`);
-          set(userStatusRef, {
-            state: 'online',
-            lastSeen: Date.now(),
-          });
-          
-          // Set up disconnect handler
-          onDisconnect(userStatusRef).set({
-            state: 'offline',
-            lastSeen: Date.now(),
-          });
-          
-          // Update last seen in Firestore
-          await updateDoc(doc(db, 'users', firebaseUser.uid), {
-            lastSeen: new Date(),
-          });
-        } else {
-          // Create new user document
-          const newUser: User = {
-            id: firebaseUser.uid,
-            name: firebaseUser.displayName || '',
-            email: firebaseUser.email || '',
-            profilePic: firebaseUser.photoURL || '',
-            role: 'user',
-            status: 'online',
-            joinedAt: new Date(),
-            lastSeen: new Date(),
-            isNightOwl: false,
-          };
-          
-          await setDoc(doc(db, 'users', firebaseUser.uid), {
-            ...newUser,
-            joinedAt: new Date(),
-            lastSeen: new Date(),
-          });
-          
-          setUser(newUser);
+          if (userDoc.exists()) {
+            const userData = userDoc.data();
+            const user: User = {
+              id: firebaseUser.uid,
+              name: userData.name || firebaseUser.displayName || '',
+              email: firebaseUser.email || '',
+              profilePic: userData.profilePic || firebaseUser.photoURL || '',
+              role: userData.role || 'user',
+              status: 'online',
+              roomNumber: userData.roomNumber,
+              joinedAt: userData.joinedAt?.toDate() || new Date(),
+              lastSeen: new Date(),
+              isNightOwl: userData.isNightOwl || false,
+            };
+            setUser(user);
+            
+            // Update presence in Realtime Database
+            const userStatusRef = ref(rtdb, `status/${firebaseUser.uid}`);
+            set(userStatusRef, {
+              state: 'online',
+              lastSeen: Date.now(),
+            });
+            
+            // Set up disconnect handler
+            onDisconnect(userStatusRef).set({
+              state: 'offline',
+              lastSeen: Date.now(),
+            });
+            
+            // Update last seen in Firestore
+            await updateDoc(doc(db, 'users', firebaseUser.uid), {
+              lastSeen: new Date(),
+            });
+          } else {
+            // Create new user document
+            const newUser: User = {
+              id: firebaseUser.uid,
+              name: firebaseUser.displayName || '',
+              email: firebaseUser.email || '',
+              profilePic: firebaseUser.photoURL || '',
+              role: 'user',
+              status: 'online',
+              joinedAt: new Date(),
+              lastSeen: new Date(),
+              isNightOwl: false,
+            };
+            
+            await setDoc(doc(db, 'users', firebaseUser.uid), {
+              ...newUser,
+              joinedAt: new Date(),
+              lastSeen: new Date(),
+            });
+            
+            setUser(newUser);
+          }
+        } catch (error) {
+          console.error('Error setting up user data:', error);
+          // Don't sign out on database errors, just log
         }
       } else {
         setUser(null);
       }
       
+      setLoading(false);
+    }, (error) => {
+      console.error('Auth state change error:', error);
       setLoading(false);
     });
 
@@ -115,9 +124,24 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const signInWithGoogle = async () => {
     try {
-      await signInWithPopup(auth, googleProvider);
-    } catch (error) {
+      console.log('Attempting Google sign in...');
+      const result = await signInWithPopup(auth, googleProvider);
+      console.log('Google sign in successful:', result.user?.email);
+    } catch (error: any) {
       console.error('Error signing in with Google:', error);
+      console.error('Error code:', error.code);
+      console.error('Error message:', error.message);
+      
+      // Handle specific Firebase auth errors
+      if (error.code === 'auth/unauthorized-domain') {
+        alert('This domain is not authorized for Google sign-in. Please contact the administrator.');
+      } else if (error.code === 'auth/popup-blocked') {
+        alert('Popup was blocked. Please allow popups for this site and try again.');
+      } else if (error.code === 'auth/popup-closed-by-user') {
+        console.log('User closed the popup');
+      } else {
+        alert('Sign in failed. Please try again.');
+      }
       throw error;
     }
   };
