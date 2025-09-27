@@ -1,0 +1,23 @@
+{
+  "build": {
+    "command": "npm run build",
+    "publishDirectory": ".next"
+  },
+  "functions": {
+    "app/api/**/*.js": {
+      "runtime": "nodejs18.x"
+    }
+  },
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/((?!api|_next|_static|favicon.ico).*)",
+      "destination": "/index.html"
+    }
+  ]
+}
