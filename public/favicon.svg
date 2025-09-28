@@ -1,0 +1,9 @@
+<!-- Simple favicon SVG -->
+<svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="16" cy="16" r="16" fill="#3b82f6"/>
+  <path d="M8 18L16 10L24 18V26H8V18Z" fill="white"/>
+  <path d="M16 10L24 18H8L16 10Z" fill="white"/>
+  <rect x="14" y="20" width="4" height="6" fill="#3b82f6"/>
+  <rect x="10" y="16" width="3" height="3" fill="#3b82f6"/>
+  <rect x="19" y="16" width="3" height="3" fill="#3b82f6"/>
+</svg>
