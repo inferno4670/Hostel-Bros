@@ -17,6 +17,7 @@ interface AuthContextType {
   firebaseUser: FirebaseUser | null;
   loading: boolean;
   signInWithGoogle: () => Promise<void>;
+  signInDemo: () => Promise<void>;
   signOut: () => Promise<void>;
   updateUserStatus: (status: 'online' | 'offline' | 'away') => Promise<void>;
 }
@@ -41,6 +42,23 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Check for demo mode first
+    const demoMode = localStorage.getItem('demoMode');
+    const demoUserData = localStorage.getItem('demoUser');
+    
+    if (demoMode === 'true' && demoUserData) {
+      try {
+        const demoUser = JSON.parse(demoUserData);
+        setUser(demoUser);
+        setLoading(false);
+        return;
+      } catch (error) {
+        console.error('Error parsing demo user data:', error);
+        localStorage.removeItem('demoMode');
+        localStorage.removeItem('demoUser');
+      }
+    }
+
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       console.log('Auth state changed:', firebaseUser?.email || 'signed out');
       setFirebaseUser(firebaseUser);
@@ -151,8 +169,49 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   };
 
+  const signInDemo = async () => {
+    try {
+      console.log('Signing in with demo account...');
+      // Create a demo user
+      const demoUser: User = {
+        id: 'demo-user-123',
+        name: 'Demo User',
+        email: 'demo@hostelbros.com',
+        profilePic: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
+        role: 'user',
+        status: 'online',
+        joinedAt: new Date(),
+        lastSeen: new Date(),
+        isNightOwl: false,
+        roomNumber: 'A-101'
+      };
+      
+      setUser(demoUser);
+      setLoading(false);
+      
+      // Store demo mode in localStorage
+      localStorage.setItem('demoMode', 'true');
+      localStorage.setItem('demoUser', JSON.stringify(demoUser));
+      
+      console.log('Demo sign in successful');
+    } catch (error) {
+      console.error('Error signing in with demo:', error);
+      throw error;
+    }
+  };
+
   const signOut = async () => {
     try {
+      // Check if in demo mode
+      const demoMode = localStorage.getItem('demoMode');
+      if (demoMode === 'true') {
+        localStorage.removeItem('demoMode');
+        localStorage.removeItem('demoUser');
+        setUser(null);
+        setFirebaseUser(null);
+        return;
+      }
+      
       if (firebaseUser) {
         // Update status to offline before signing out
         const userStatusRef = ref(rtdb, `status/${firebaseUser.uid}`);
@@ -199,6 +258,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     firebaseUser,
     loading,
     signInWithGoogle,
+    signInDemo,
     signOut,
     updateUserStatus,
   };

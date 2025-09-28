@@ -4,6 +4,7 @@ import { getFirestore } from 'firebase/firestore';
 import { getDatabase } from 'firebase/database';
 // Note: Firebase Storage is disabled, using Google Drive API instead
 
+// Production Firebase config with environment variables
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "AIzaSyDXiJI-19-fhSfFZ9puXkRSzIH6YLf8Kt8",
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || "hostel-bros.firebaseapp.com",
