@@ -4,15 +4,21 @@ import { getFirestore } from 'firebase/firestore';
 import { getDatabase } from 'firebase/database';
 // Note: Firebase Storage is disabled, using Google Drive API instead
 
-// Production Firebase config with environment variables
+// Clean environment variables to prevent illegal URL encoding issues
+const cleanEnvVar = (value: string | undefined): string => {
+  return value ? value.trim().replace(/\r\n/g, '').replace(/\n/g, '') : '';
+};
+
+// Updated Firebase configuration with your real project
 const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "AIzaSyDXiJI-19-fhSfFZ9puXkRSzIH6YLf8Kt8",
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || "hostel-bros.firebaseapp.com",
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || "hostel-bros",
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || "hostel-bros.firebasestorage.app",
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID || "946063362575",
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID || "1:946063362575:web:0eabca27e5d1aa06a5f17a",
-  databaseURL: process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL || "https://hostel-bros-default-rtdb.asia-southeast1.firebasedatabase.app",
+  apiKey: cleanEnvVar(process.env.NEXT_PUBLIC_FIREBASE_API_KEY) || "AIzaSyDXiJI-19-fhSfFZ9puXkRSzIH6YLf8Kt8",
+  authDomain: cleanEnvVar(process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN) || "hostel-bros.firebaseapp.com",
+  projectId: cleanEnvVar(process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID) || "hostel-bros",
+  storageBucket: cleanEnvVar(process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET) || "hostel-bros.firebasestorage.app",
+  messagingSenderId: cleanEnvVar(process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID) || "946063362575",
+  appId: cleanEnvVar(process.env.NEXT_PUBLIC_FIREBASE_APP_ID) || "1:946063362575:web:0eabca27e5d1aa06a5f17a",
+  databaseURL: cleanEnvVar(process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL) || "https://hostel-bros-default-rtdb.asia-southeast1.firebasedatabase.app",
+  measurementId: "G-9VEG7W7PMX"
 };
 
 // Debug: Log the configuration being used

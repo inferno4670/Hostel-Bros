@@ -11,21 +11,13 @@ import {
 } from 'lucide-react';
 
 export function LoginPage() {
-  const { signInWithGoogle, signInDemo, loading } = useAuth();
+  const { signInWithGoogle, loading } = useAuth();
 
   const handleGoogleSignIn = async () => {
     try {
       await signInWithGoogle();
     } catch (error) {
       console.error('Failed to sign in:', error);
-    }
-  };
-
-  const handleDemoSignIn = async () => {
-    try {
-      await signInDemo();
-    } catch (error) {
-      console.error('Failed to sign in with demo:', error);
     }
   };
 
@@ -66,28 +58,6 @@ export function LoginPage() {
 
           <div className="space-y-4">
             <button
-              onClick={handleDemoSignIn}
-              disabled={loading}
-              className="w-full flex items-center justify-center px-4 py-3 border-2 border-blue-500 rounded-lg shadow-sm bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900/40 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
-            >
-              {loading ? (
-                <Loader2 className="h-5 w-5 animate-spin mr-2" />
-              ) : (
-                <Shield className="h-5 w-5 mr-2" />
-              )}
-              {loading ? 'Signing in...' : 'Try Demo Mode'}
-            </button>
-            
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300 dark:border-gray-600" />
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white dark:bg-gray-800 text-gray-500 dark:text-gray-400">Or continue with</span>
-              </div>
-            </div>
-
-            <button
               onClick={handleGoogleSignIn}
               disabled={loading}
               className="w-full flex items-center justify-center px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg shadow-sm bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
@@ -102,14 +72,8 @@ export function LoginPage() {
                   <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
                 </svg>
               )}
-              {loading ? 'Signing in...' : 'Google Account'}
+              {loading ? 'Signing in...' : 'Continue with Google'}
             </button>
-            
-            <div className="bg-yellow-50 dark:bg-yellow-900/20 p-3 rounded-lg">
-              <p className="text-sm text-yellow-800 dark:text-yellow-200 text-center">
-                🚀 <strong>Demo Mode:</strong> Test all features instantly without sign-up!
-              </p>
-            </div>
             
             <div className="bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg">
               <p className="text-sm text-blue-800 dark:text-blue-200 text-center">
