@@ -125,6 +125,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const signInWithGoogle = async () => {
     try {
       console.log('Attempting Google sign in...');
+      console.log('Auth domain:', auth.app.options.authDomain);
       const result = await signInWithPopup(auth, googleProvider);
       console.log('Google sign in successful:', result.user?.email);
     } catch (error: any) {
@@ -139,8 +140,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
         alert('Popup was blocked. Please allow popups for this site and try again.');
       } else if (error.code === 'auth/popup-closed-by-user') {
         console.log('User closed the popup');
+      } else if (error.code === 'auth/invalid-api-key') {
+        alert('Firebase configuration error. Please check API key.');
+      } else if (error.code === 'auth/project-not-found') {
+        alert('Firebase project not found. Please check project configuration.');
       } else {
-        alert('Sign in failed. Please try again.');
+        alert(`Sign in failed: ${error.message}. Please try again.`);
       }
       throw error;
     }
