@@ -2,7 +2,7 @@
 
 import { useAuth } from '@/contexts/AuthContext';
 import { Layout } from '@/components/Layout';
-import LoginPage from '@/components/LoginPage';
+import { LoginPage } from '@/components/LoginPage';
 import { DollarSign, UtensilsCrossed, Calendar, Users, MessageCircle, Shirt } from 'lucide-react';
 
 const quickActions = [
@@ -68,12 +68,12 @@ export default function Home() {
   return (
     <Layout>
       <div className="space-y-6">
-        <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
             Good {new Date().getHours() < 12 ? 'morning' : new Date().getHours() < 18 ? 'afternoon' : 'evening'}, {user.name.split(' ')[0]}! 🎉
           </h2>
-          <p className="text-gray-600">
-            Welcome to your hostel dashboard. What would you like to do today?
+          <p className="text-gray-600 dark:text-gray-400">
+            Welcome to Hostel-Bros. What would you like to do today?
           </p>
         </div>
 
@@ -84,17 +84,17 @@ export default function Home() {
               <a
                 key={action.name}
                 href={action.href}
-                className="bg-white rounded-lg shadow hover:shadow-md transition-shadow p-6 group"
+                className="bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-md transition-shadow p-6 group"
               >
                 <div className="flex items-start space-x-4">
                   <div className={`${action.color} rounded-lg p-3 group-hover:scale-105 transition-transform`}>
                     <Icon className="h-6 w-6 text-white" />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                       {action.name}
                     </h3>
-                    <p className="text-gray-600 text-sm mt-1">
+                    <p className="text-gray-600 dark:text-gray-400 text-sm mt-1">
                       {action.description}
                     </p>
                   </div>
@@ -105,38 +105,38 @@ export default function Home() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="bg-white rounded-lg shadow p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Recent Activity</h3>
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Recent Activity</h3>
             <div className="space-y-3">
               <div className="flex items-center space-x-3 text-sm">
                 <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                <span className="text-gray-600">No recent expenses to split</span>
+                <span className="text-gray-600 dark:text-gray-400">No recent expenses to split</span>
               </div>
               <div className="flex items-center space-x-3 text-sm">
                 <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                <span className="text-gray-600">Welcome to Hostel SuperApp!</span>
+                <span className="text-gray-600 dark:text-gray-400">Welcome to Hostel-Bros!</span>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow p-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Stats</h3>
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Quick Stats</h3>
             <div className="grid grid-cols-2 gap-4">
               <div className="text-center">
                 <div className="text-2xl font-bold text-blue-600">0</div>
-                <div className="text-xs text-gray-500">Pending Bills</div>
+                <div className="text-xs text-gray-500 dark:text-gray-400">Pending Bills</div>
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold text-green-600">0</div>
-                <div className="text-xs text-gray-500">Events This Week</div>
+                <div className="text-xs text-gray-500 dark:text-gray-400">Events This Week</div>
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold text-purple-600">1</div>
-                <div className="text-xs text-gray-500">Active Members</div>
+                <div className="text-xs text-gray-500 dark:text-gray-400">Active Members</div>
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold text-orange-600">0</div>
-                <div className="text-xs text-gray-500">Unread Messages</div>
+                <div className="text-xs text-gray-500 dark:text-gray-400">Unread Messages</div>
               </div>
             </div>
           </div>

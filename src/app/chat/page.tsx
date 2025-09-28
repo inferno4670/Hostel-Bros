@@ -14,8 +14,7 @@ import {
   arrayUnion,
   getDocs
 } from 'firebase/firestore';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { db, storage } from '@/lib/firebase';
+import { db } from '@/lib/firebase';
 import { Chat, Message, User } from '@/types';
 import { 
   MessageCircle, 
@@ -147,12 +146,27 @@ export default function ChatPage() {
   };
 
   const uploadFile = async (file: File): Promise<string> => {
-    const fileExtension = file.name.split('.').pop();
-    const fileName = `${generateId()}.${fileExtension}`;
-    const storageRef = ref(storage, `chat-files/${fileName}`);
-    
-    await uploadBytes(storageRef, file);
-    return await getDownloadURL(storageRef);
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('folder', 'chat-files');
+
+    try {
+      const response = await fetch('/api/drive/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Upload failed');
+      }
+
+      const data = await response.json();
+      return data.fileUrl;
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      throw error;
+    }
   };
 
   const handleSendMessage = async (e: React.FormEvent) => {
@@ -419,7 +433,6 @@ export default function ChatPage() {
                 )}
                 
                 <form onSubmit={handleSendMessage} className="flex items-center space-x-2">
-                  {/* File uploads disabled - enable when Firebase Storage is set up
                   <input
                     type="file"
                     onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
@@ -429,7 +442,6 @@ export default function ChatPage() {
                   <label htmlFor="file-input" className="p-2 text-gray-400 hover:text-gray-600 cursor-pointer">
                     <Paperclip className="h-5 w-5" />
                   </label>
-                  */}
                   
                   <input
                     type="text"

@@ -2,7 +2,7 @@ import { initializeApp } from 'firebase/app';
 import { getAuth, GoogleAuthProvider } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import { getDatabase } from 'firebase/database';
-// import { getStorage } from 'firebase/storage'; // Disabled until Blaze plan
+// Note: Firebase Storage is disabled, using Google Drive API instead
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || "AIzaSyDXiJI-19-fhSfFZ9puXkRSzIH6YLf8Kt8",
@@ -27,17 +27,19 @@ const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
 export const rtdb = getDatabase(app);
-// export const storage = getStorage(app); // Disabled until Blaze plan
-export const storage = null; // Temporarily disabled
+// Firebase Storage disabled - using Google Drive API for file storage
+export const storage = null; // Google Drive replaces Firebase Storage
 
-// Configure Google Auth Provider
+// Configure Google Auth Provider with enhanced scopes for Google Drive
 export const googleProvider = new GoogleAuthProvider();
 googleProvider.setCustomParameters({
   prompt: 'select_account'
 });
 
-// Add additional scopes if needed
+// Add Google Drive scopes for file storage functionality
 googleProvider.addScope('email');
 googleProvider.addScope('profile');
+googleProvider.addScope('https://www.googleapis.com/auth/drive.file');
+googleProvider.addScope('https://www.googleapis.com/auth/drive.readonly');
 
 export default app;

@@ -16,8 +16,7 @@ import {
   deleteDoc,
   getDocs
 } from 'firebase/firestore';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { db, storage } from '@/lib/firebase';
+import { db } from '@/lib/firebase';
 import { Post, Comment, User } from '@/types';
 import { 
   Plus, 
@@ -110,12 +109,27 @@ export default function SocialWallPage() {
   };
 
   const uploadFile = async (file: File): Promise<string> => {
-    const fileExtension = file.name.split('.').pop();
-    const fileName = `${generateId()}.${fileExtension}`;
-    const storageRef = ref(storage, `posts/${fileName}`);
-    
-    await uploadBytes(storageRef, file);
-    return await getDownloadURL(storageRef);
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('folder', 'posts');
+
+    try {
+      const response = await fetch('/api/drive/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Upload failed');
+      }
+
+      const data = await response.json();
+      return data.fileUrl;
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      throw error;
+    }
   };
 
   const handleCreatePost = async (e: React.FormEvent) => {
@@ -623,20 +637,27 @@ export default function SocialWallPage() {
                   />
                 </div>
                 
-                {/* File uploads disabled - enable when Firebase Storage is set up
                 {(newPost.type === 'image' || newPost.type === 'doc') && (
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       {newPost.type === 'image' ? 'Upload Image/Meme' : 'Upload Document'}
                     </label>
                     <div className="border-2 border-dashed border-gray-300 rounded-lg p-4">
-                      <div className="text-center text-gray-500">
-                        File uploads require Firebase Storage setup
-                      </div>
+                      <input
+                        type="file"
+                        accept={newPost.type === 'image' ? 'image/*' : '.pdf,.doc,.docx,.txt,.xlsx,.pptx'}
+                        onChange={handleFileSelect}
+                        className="w-full"
+                        id="file-upload"
+                      />
+                      {selectedFile && (
+                        <div className="mt-2 text-sm text-gray-600">
+                          Selected: {selectedFile.name}
+                        </div>
+                      )}
                     </div>
                   </div>
                 )}
-                */}
                 
                 <div className="bg-blue-50 p-3 rounded-lg">
                   <p className="text-sm text-blue-800">

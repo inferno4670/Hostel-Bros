@@ -1,13 +1,28 @@
-# 🏠 Hostel SuperApp
+# 🏠 Hostel-Bros
 
-A comprehensive all-in-one web application for hostel residents to manage expenses, events, social interactions, and daily activities.
+A comprehensive **Progressive Web App (PWA)** for hostel residents to manage expenses, events, social interactions, and daily activities. Installable on mobile devices with 100% free Google Drive storage!
 
-![Hostel SuperApp](https://img.shields.io/badge/Next.js-15.5.4-blue)
+![Hostel-Bros](https://img.shields.io/badge/Next.js-15.5.4-blue)
 ![Firebase](https://img.shields.io/badge/Firebase-Latest-orange)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.0-cyan)
+![PWA](https://img.shields.io/badge/PWA-Ready-green)
+![Google Drive](https://img.shields.io/badge/Storage-Google%20Drive-yellow)
 
 ## ✨ Features
+
+### 📱 **PWA Features**
+- **📲 Installable** - Add to home screen on iOS/Android
+- **🔄 Offline Support** - Works without internet connection
+- **🌙 Dark/Light Mode** - Toggle themes with system preference
+- **📱 Mobile Optimized** - Responsive design for all devices
+- **⚡ Fast Loading** - Service worker caching for instant access
+
+### 💾 **100% Free Storage**
+- **Google Drive Integration** - 15GB free storage per account
+- **Automatic Organization** - Files organized in "Hostel-Bros" folder
+- **No Server Costs** - All files stored in user's Google Drive
+- **Large File Support** - Upload videos, documents, presentations
 
 ### 🏠 Core Management
 - **💰 Expense Splitter** - Split bills like Splitwise with real-time balance tracking
@@ -27,12 +42,35 @@ A comprehensive all-in-one web application for hostel residents to manage expens
 - **📊 Analytics** - System usage statistics and activity monitoring
 - **⚙️ System Controls** - Complete admin control panel
 
+### ⚙️ Settings & Customization
+- **🎨 Theme Control** - Light, dark, or system theme
+- **🔔 Notifications** - Customize notification preferences
+- **📱 App Management** - Install app, offline status, clear data
+- **🔒 Privacy Controls** - View security and data storage info
+
 ## 🚀 Quick Start
 
 ### Prerequisites
 - Node.js 18+ and npm
-- Firebase project with Authentication, Firestore, Realtime Database, and Storage enabled
+- Firebase project with Authentication, Firestore, and Realtime Database
+- Google Cloud Console project with Drive API enabled
 - Vercel account for deployment
+
+### 📱 **Mobile Installation** (End Users)
+
+#### **iOS (Safari):**
+1. Open the app URL in Safari
+2. Tap the **Share** button
+3. Select **"Add to Home Screen"**
+4. Tap **"Add"** - App installs like a native app!
+
+#### **Android (Chrome):**
+1. Open the app URL in Chrome
+2. Tap browser menu (three dots)
+3. Select **"Add to Home screen"**
+4. Tap **"Add"** - App installs like a native app!
+
+### 💻 **Local Development**
 
 ### Local Development
 
@@ -71,7 +109,7 @@ Open [http://localhost:3000](http://localhost:3000) to view the app.
 - **Language:** TypeScript
 - **Database:** Firebase Firestore + Realtime Database
 - **Authentication:** Firebase Auth (Google)
-- **Storage:** Firebase Storage
+- **Storage:** Google Drive API (100% Free)
 - **Deployment:** Vercel
 - **UI Components:** Radix UI + Lucide React
 

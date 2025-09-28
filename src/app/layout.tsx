@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from '@/contexts/AuthContext';
+import { ThemeProvider } from '@/contexts/ThemeContext';
+import NextAuthSessionProvider from '@/components/SessionProvider';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,8 +16,20 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Hostel SuperApp",
-  description: "All-in-one app for hostel residents - manage expenses, events, chat, and more!",
+  title: "Hostel-Bros",
+  description: "Your all-in-one hostel companion - manage expenses, events, chat, and more!",
+  manifest: "/manifest.json",
+  themeColor: "#3b82f6",
+  viewport: "width=device-width, initial-scale=1, shrink-to-fit=no",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Hostel-Bros"
+  },
+  icons: {
+    icon: "/icons/icon-192x192.png",
+    apple: "/icons/icon-192x192.png"
+  }
 };
 
 export default function RootLayout({
@@ -28,9 +42,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <AuthProvider>
-          {children}
-        </AuthProvider>
+        <NextAuthSessionProvider>
+          <ThemeProvider>
+            <AuthProvider>
+              {children}
+            </AuthProvider>
+          </ThemeProvider>
+        </NextAuthSessionProvider>
       </body>
     </html>
   );
